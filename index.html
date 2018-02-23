@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Tiny Module Loaders</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="public/stylesheets/simple-sidebar.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper"></div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1>Tiny Loaders</h1>
+                        <p>This is a demo of various Tiny AMD Module Loaders.</p>
+                        <h3>Package.json
+                            <small>Project Configuration</small>
+                        </h3>
+                        <pre><code class="language-javascript">
+                            {
+                                "dependencies": {
+                                    // LABjs does not have a proper npm registry
+                                    "LABjs": "https://github.com/getify/LABjs.git",
+                                    // only get almond
+                                    "almond": "^0.3.3",
+                                    // for styling
+                                    "bootstrap": "3.3.7",
+                                    // Curl.js
+                                    "curl-amd": "^0.8.12",
+                                    "jquery": "^3.3.1",
+                                    // for Styling code
+                                    "prismjs": "^1.11.0"
+                                },
+                                "devDependencies": {
+                                    // CSS Loader for Webpack
+                                    "css-loader": "^0.28.9",
+                                    // Raw file Loader for Webpack
+                                    "file-loader": "^1.1.7",
+                                    // HTML Loader for Webpack
+                                    "html-loader": "^0.5.5",
+                                    // Didn't work. Bundles only 1 level of dependencies.
+                                    "js-bundler": "^1.2.3",
+                                    // Small server for serving file.
+                                    "lite-server": "^2.3.0",
+                                    // Cool but doesn't work either. Need to check
+                                    "parcel-bundler": "^1.6.1",
+                                    // Rollup is basically for bundling CJS files
+                                    "rollup": "^0.56.2",
+                                    // but it also has an AMD plugin
+                                    "rollup-plugin-amd": "^3.0.0",
+                                    // Style Loader for Webpack
+                                    "style-loader": "^0.20.2",
+                                    // This one works.
+                                    "webpack": "^3.11.0"
+                                },
+                                "scripts": {
+                                    // Build using rollup
+                                    "bundle-rollup": "rollup --config rollup.bundle.js",
+                                    // Build using JS Bundler
+                                    "js-bundler": "bundle public/app/main-almond.js > dist/js-bundle/bundle.js",
+                                    // Build using Parcel.js
+                                    "parcel-build": "parcel build public/app/main-almond.js -d dist/parcel --no-minify --no-cache",
+                                    // Build using Webpack
+                                    // If no --config is given it looks for webpack.config.js in current path
+                                    "webpack-bundle": "webpack",          
+                                    // run server                          
+                                    "server": "lite-server",
+                                    // install, build and run server
+                                    "start": "npm install && npm run webpack-bundle && npm run server"
+                                }
+                            }
+                        </code></pre>
+                        <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="node_modules/jquery/dist/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- Prism -->
+    <script src="node_modules/prismjs/prism.js"></script>
+    <script src="node_modules/prismjs/plugins/normalize-whitespace/prism-normalize-whitespace.js"></script>
+    <link href="node_modules/prismjs/themes/prism-coy.css" rel="stylesheet">
+
+    <!-- Menu Toggle Script -->
+    <script>
+        $("#menu-toggle").click(function(e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+        $("#sidebar-wrapper").load("public/app/amd/sidebar/sidebar.html");
+    </script>
+
+</body>
+
+</html>

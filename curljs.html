@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>Tiny Loaders - CurlJS</title>
+
+        <script src="node_modules/curl-amd/src/curl.js"></script>        
+        <script>
+            // config given here for ease of path
+            // bootstrap is a non-AMD module, so don't expect a define() in it
+            
+            /**
+             * In the original legacy loader, it didn't wait for dependencies to load
+             * Fixed this in the custom loader.
+             * So now the user can inject bootstrap as,
+             *      define(['bootstrap'], factory);
+             * This will first load 'jquery' then 'bootstrap'
+            */
+            curl.config({
+                baseUrl: "public/app",
+                pluginPath: "/node_modules/curl-amd/src/curl/plugin/",
+                paths: {
+                    "curl": '/node_modules/curl-amd/src/curl',  // Notice: this is ref to folder. An alias name.
+                    "jquery": "/node_modules/jquery/dist/jquery",
+                    "css!bootstrap": "/node_modules/bootstrap/dist/css/bootstrap.min.css",
+                    "css!app": "../stylesheets/simple-sidebar.css", // Injecting CSS make page bouncy on load.
+                    "bootstrap": {
+                        location: "/node_modules/bootstrap/dist/js/bootstrap.min",
+                        config: {
+                            loader: "my-curl/customLegacyLoader",   // Original one had issue. So moddified it.
+                            exports: "function(){}",    // noop
+                            requires: [ "jquery" ],
+                        }
+                    },
+                    "Block": "amd/Block"
+                },
+            });
+        </script>
+        <script src="public/app/main-curl.js"></script>
+
+    </head>
+
+    <body>
+
+        <div id="wrapper">
+
+            <!-- Sidebar -->
+            <div id="sidebar-wrapper"></div>
+            <!-- /#sidebar-wrapper -->
+
+            <!-- Page Content -->
+            <div id="page-content-wrapper">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h1>CurlJS - Custom Mod</h1>
+                            <p>This is a slightly modified version of CurlJS</p>
+                            <p>
+                                In the original version the non-AMD files did not wait for dependencies. This was fixed by
+                                creating an external custom legacy loader. Now the user can inject the non-AMD file.
+                                <p><code>
+                                    define(["bootstrap"], factory);
+                                </code></p>
+                                The above would automatically load the file and its dependencies before executing factory.
+                            </p>
+                            <p><a href="curljs-traditional.html">Click Here</a> to view the Traditional Curl.js</p>
+                            <div class="module-container"></div>
+                            <h3>Code</h3>
+                            <h4 style="margin-top: 30px;">1. Curl Configuration</h4>
+                            <pre><code class="language-javascript">
+                                // config given in the html itself for ease of path resolution
+                                /**
+                                * In the original legacy loader, it didn't wait for dependencies to load
+                                * Fixed this in the custom loader.
+                                * So now the user can inject bootstrap as,
+                                *      define(['bootstrap'], factory);
+                                * This will first load 'jquery' then 'bootstrap'
+                                */
+                                curl.config({
+                                    baseUrl: "public/app",
+                                    pluginPath: "/node_modules/curl-amd/src/curl/plugin/",
+                                    paths: {
+                                        "curl": '/node_modules/curl-amd/src/curl',  // Notice: this is ref to folder. An alias name.
+                                        "jquery": "/node_modules/jquery/dist/jquery",
+                                        "css!bootstrap": "/node_modules/bootstrap/dist/css/bootstrap.min.css",
+                                        "css!app": "../stylesheets/simple-sidebar.css",
+                                        
+                                        // bootstrap.js is a non-AMD module, 
+                                        // the usual loader exects a define() in it
+                                        "bootstrap": {
+                                            location: "/node_modules/bootstrap/dist/js/bootstrap.min",
+                                            config: {
+                                                // Tell curl to use this loader instead of it own
+                                                loader: "my-curl/customLegacyLoader",   // This is a custom created loader.
+                                                exports: "function(){}",    // noop
+                                                requires: [ "jquery" ],
+                                            }
+                                        },
+                                        "Block": "amd/Block"
+                                    },
+                                });
+                            </code></pre>
+                            <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /#page-content-wrapper -->
+
+        </div>
+        <!-- /#wrapper -->
+
+        <!-- Prism -->
+        <!-- These files were added later-->
+        <script src="node_modules/prismjs/prism.js"></script>
+        <script src="node_modules/prismjs/plugins/normalize-whitespace/prism-normalize-whitespace.js"></script>
+        <link href="node_modules/prismjs/themes/prism-coy.css" rel="stylesheet">
+
+    </body>
+
+</html>

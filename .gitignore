@@ -1,0 +1,6 @@
+npm-debug.log
+**/node_modules
+/dist/js-bundle
+/dist/parcel
+/dist/rollup
+/dist/webpack

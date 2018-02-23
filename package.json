@@ -1,0 +1,35 @@
+{
+  "name": "Tiny_Loaders",
+  "version": "1.0.0",
+  "description": "A collection of Tiny AMD module loaders",
+  "author": "ssp5zone",
+  "license": "MIT",
+  "dependencies": {
+    "LABjs": "https://github.com/getify/LABjs.git",
+    "almond": "^0.3.3",
+    "bootstrap": "3.3.7",
+    "curl-amd": "^0.8.12",
+    "jquery": "^3.3.1",
+    "prismjs": "^1.11.0"
+  },
+  "devDependencies": {
+    "css-loader": "^0.28.9",
+    "file-loader": "^1.1.7",
+    "html-loader": "^0.5.5",
+    "js-bundler": "^1.2.3",
+    "lite-server": "^2.3.0",
+    "parcel-bundler": "^1.6.1",
+    "rollup": "^0.56.2",
+    "rollup-plugin-amd": "^3.0.0",
+    "style-loader": "^0.20.2",
+    "webpack": "^3.11.0"
+  },
+  "scripts": {
+    "bundle-rollup": "rollup --config rollup.bundle.js",
+    "js-bundler": "bundle public/app/main-almond.js > dist/js-bundle/bundle.js",
+    "parcel-build": "parcel build public/app/main-almond.js -d dist/parcel --no-minify --no-cache",
+    "webpack-bundle": "webpack",
+    "server": "lite-server",
+    "start": "npm install && npm run webpack-bundle && npm run server"
+  }
+}

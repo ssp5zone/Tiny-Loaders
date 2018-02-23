@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>Tiny Loaders - AlmondJS</title>
+    </head>
+
+    <body>
+        <div id="wrapper">
+            <!-- Sidebar -->
+            <div id="sidebar-wrapper"></div>
+            <!-- /#sidebar-wrapper -->
+            <!-- Page Content -->
+            <div id="page-content-wrapper">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h1>AlmondJS + Webpack</h1>
+                            <p>AlmondJS is a small part of RequireJS, which has no provision to download dependencies on demand. Hence it only supports bundled module</p>
+                            <p>This page uses the files bundled via Webpack. Webpack is easy and works quite well with node_modules (auto-resolution).</p>
+                            <div class="module-container"></div>
+                            <h4>Webpack Config: </h4>
+                            <pre><code class="language-javascript">
+                                // the __dirname issue might be resolved by giving proper base URL
+                                module.exports = {
+                                                    entry: './public/app/main-almond.js',
+                                                    output: {
+                                                        // weird issue, without __dirname doesn't work
+                                                        path: __dirname + "/dist/webpack",
+                                                        filename: 'build.js',
+                                                    },
+                                                    resolve: {
+                                                        alias: {
+                                                            // weird issue, without __dirname doesn't work
+                                                            "Block":  __dirname + "/public/app/amd/Block.js",
+                                                            // Notice, no resolution for jquery required, cause
+                                                            // by default it searches an unspecified module in "/node_modules/mod-name/index.js"
+                                                        }
+                                                    },
+                                                    module: {
+                                                            // rules are only necessary if you want to skip the 
+                                                            // the "loader-name!" part in require().
+                                                            rules: [
+                                                            {
+                                                                // you can always use "css!file/path.css" inside require() and skip this
+                                                                test: /\.css$/,
+                                                                use: [
+                                                                    'style-loader', // have to be npm install style-loader
+                                                                    'css-loader' // have to be npm install css-loader
+                                                                ]
+                                                            },
+                                                            {
+                                                                // this is required because bootstrap.js internally uses fonts
+                                                                test: /\.(woff|woff2|eot|ttf|otf|svg)$/,
+                                                                use: [
+                                                                    'file-loader' // have to be npm install file-loader
+                                                                ]
+                                                            }
+                                                            // notice we did not give any rule for "html-loader"
+                                                            // cause we are explicity calling it using "!" syntax when required
+                                                        ],
+                                                    },   
+                                                    // the following is required because we didn't want to disturb
+                                                    // the curl.js loader name "text". Otherwise not needed
+                                                    resolveLoader: {
+                                                        alias: {
+                                                            // provides an alias name for the loader
+                                                            'text': 'html-loader', // have to be npm install html-loader
+                                                        },
+                                                    },
+                                                };
+                            </code></pre>
+                            <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /#page-content-wrapper -->
+        </div>
+        <!-- /#wrapper -->
+    </body>
+
+    <!-- Putting the script tag at end is better than relying on jquery domready -->
+    <!-- Because it defeats the purpose of sequentially running the code -->
+    <!-- Placing at ensures that dom elements are there. Any code can directly use them -->
+    <script src="dist/webpack/build.js"></script>
+
+    <!-- Prism -->
+    <!-- These files were added later. To do: Bundle them as well. -->
+    <script src="node_modules/prismjs/prism.js"></script>
+    <script src="node_modules/prismjs/plugins/normalize-whitespace/prism-normalize-whitespace.js"></script>
+    <link href="node_modules/prismjs/themes/prism-coy.css" rel="stylesheet">
+
+</html>

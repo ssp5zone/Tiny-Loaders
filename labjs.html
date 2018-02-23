@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>LABjs</title>
+
+        <!-- Bootstrap Core CSS -->
+        <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        <link href="public/stylesheets/simple-sidebar.css" rel="stylesheet">
+
+        <!-- Prism CSS -->
+        <link href="node_modules/prismjs/themes/prism-coy.css" rel="stylesheet">
+
+        <script src="node_modules/LABjs/LAB.js"></script>
+        <script>
+            // BasePath only for this chain
+            $LAB.setOptions({BasePath:"node_modules/"})
+            .script("jquery/dist/jquery.js")
+            .script("bootstrap/dist/js/bootstrap.min.js")
+            .wait(function(){
+
+                // Another BasePath for this Chain
+                // AlwaysPreserveOrder will implicitly add .wait() after each .script()
+                // in the given order
+                $LAB.setOptions({BasePath:"public/app/", AlwaysPreserveOrder: true})
+                .script("block.js")
+                .script("grandParent.js")
+                .script("parent.js")
+                .script("child.js");
+
+                // This module can load independently from above, so start loading immediately
+                $LAB.setOptions({BasePath:"public/javascripts/"})
+                .script("loadSidebar.js").wait()
+                .script("initSidebar.js");
+                
+            });
+
+            // Parallel Load. Our Code does not need to wait for this
+            $LAB.setOptions({BasePath:"node_modules/"})
+            .script("prismjs/prism.js")
+            .script("prismjs/plugins/normalize-whitespace/prism-normalize-whitespace.js");
+        </script>
+    </head>
+
+    <body>
+
+        <div id="wrapper">
+
+            <!-- Sidebar -->
+            <div id="sidebar-wrapper"></div>
+            <!-- /#sidebar-wrapper -->
+
+            <!-- Page Content -->
+            <div id="page-content-wrapper">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h1>LABjs</h1>
+                            <p>This is the simplest of all Lazy Module Loaders.</p>
+                            <p>
+                                Module loaders need to load things in specific order <em>(dependent modules first)</em>.
+                                To do this on-demand (lazy load files), all of them do the same things,
+                                <ol>
+                                    <li>Write a <code>script</code> tag for needed file in the DOM.</li>
+                                    <li>Attach an <code>onReadyStateChange</code> event listener to it.</li>
+                                    <li>Once the event is triggered do the neccesary/load next file</li>
+                                    <li>Goto 1</li>
+                                </ol>
+                            </p>
+                            <p>LABjs loads the modules (JS files) one by one, ensuring the later modules 
+                                have everything they need from their previous dependencies.</p>
+                            <div class="module-container"> </div>
+                            <div class="alert alert-info" role="alert">
+                                <strong>Note!</strong> 
+                                LABjs does not understand AMD, CJS, UMD, System or any other module formats.
+                                It just does one job - Load scripts sequentially - but it does it properly.
+                            </div>
+                            <h4>Setup:</h4>
+                            <pre><code class="language-javascript">
+                                // BasePath only for this chain
+                                $LAB.setOptions({BasePath:"node_modules/"})
+                                .script("jquery/dist/jquery.js")
+                                .script("bootstrap/dist/js/bootstrap.min.js")
+                                .wait(function(){
+
+                                    // Another BasePath for this Chain
+                                    // AlwaysPreserveOrder will implicitly add .wait() after each .script()
+                                    // in the given order
+                                    $LAB.setOptions({BasePath:"public/app/", AlwaysPreserveOrder: true})
+                                    .script("block.js")
+                                    .script("grandParent.js")
+                                    .script("parent.js")
+                                    .script("child.js");
+
+                                    // This module can load independently from above, so start loading immediately
+                                    $LAB.setOptions({BasePath:"public/javascripts/"})
+                                    .script("loadSidebar.js").wait()
+                                    .script("initSidebar.js");
+                                    
+                                });
+
+                                // Parallel Load. Our Code does not need to wait for this
+                                $LAB.setOptions({BasePath:"node_modules/"})
+                                .script("prismjs/prism.js")
+                                .script("prismjs/plugins/normalize-whitespace/prism-normalize-whitespace.js");
+                            </code></pre>
+                            <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /#page-content-wrapper -->
+
+        </div>
+        <!-- /#wrapper -->
+
+    </body>
+
+</html>

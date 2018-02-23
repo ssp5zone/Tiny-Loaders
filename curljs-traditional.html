@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>Tiny Loaders - CurlJS</title>
+
+        <script src="node_modules/curl-amd/src/curl.js"></script>
+        
+        <script>
+            curl.config({
+                baseUrl: "public/app",
+                pluginPath: "/node_modules/curl-amd/src/curl/plugin/",
+                paths: {
+                    "curl": '/node_modules/curl-amd/src/curl',
+                    "jquery": "/node_modules/jquery/dist/jquery",
+                    "css!bootstrap": "/node_modules/bootstrap/dist/css/bootstrap.min.css",
+                    "css!app": "../stylesheets/simple-sidebar.css", // Injecting CSS make page bouncy on load.
+                    "js!bootstrap": "/node_modules/bootstrap/dist/js/bootstrap.min.js", // Notice: We have to give an extension here 
+                    "Block": "amd/Block"
+                },
+                preloads: ['jquery'],
+            });
+        </script>
+
+         <script src="public/app/main-curl.js"></script>
+
+    </head>
+
+    <body>
+
+        <div id="wrapper">
+
+            <!-- Sidebar -->
+            <div id="sidebar-wrapper"></div>
+            <!-- /#sidebar-wrapper -->
+
+            <!-- Page Content -->
+            <div id="page-content-wrapper">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h1>CurlJS - Tradional</h1>
+                            <p>Curl is a small AMD based module loader. Love the simplicity!!</p>
+                            <p>This is an implimentation of Curl.js without any custom modifications.
+                                Here the non-AMD plugins are called via <i>js!</i> plugin of Curl.</p>
+                            <p>The config is short 'n sweet. But its your responsibility to ensure that it's
+                                dependencies are loaded prior to it. It can be done via, </p>
+                            <ol>
+                                <li> <code>preloads: ['jquery', 'other-dependencies'] </code></li>
+                                <li> <code>curl(['dependencies']).next('js!non-amd-file.js').next(['main']) </code></li>
+                            </ol>
+                            <p><a href="curljs.html">Click Here</a> to view the Modified version of Curl.js</p>
+                            <div class="module-container"></div>
+                            <h3>Code</h3>
+                            <h4 style="margin-top: 30px;">1. Curl Configuration</h4>
+                            <pre><code class="language-javascript">
+                                curl.config({
+                                    // if someone asks for an unregistered module, where to look from
+                                    baseUrl: "public/app",
+                                    
+                                    // where are the curl internal plugins (text, css etc.) located 
+                                    pluginPath: "/node_modules/curl-amd/src/curl/plugin/",
+
+                                    // define paths
+                                    paths: {
+                                        "curl": '/node_modules/curl-amd/src/curl',
+                                        "jquery": "/node_modules/jquery/dist/jquery",
+
+                                        // This is how you load CSS files in Curl
+                                        "css!bootstrap": "/node_modules/bootstrap/dist/css/bootstrap.min.css",
+                                        "css!app": "../stylesheets/simple-sidebar.css", // Injecting CSS make page bouncy on load.
+                                        
+                                        // bootstrap is a Non-AMD module, just load it as a file. Don't bother about define()
+                                        "js!bootstrap": "/node_modules/bootstrap/dist/js/bootstrap.min.js", // Notice: We have to give an extension here 
+                                        
+                                        // a custom module path
+                                        "Block": "amd/Block"
+                                    },
+
+                                    // preload was necessry because a Non-AMD mondule - bootstrap.js needs it.
+                                    // Read the full issue above
+                                    preloads: ['jquery'],
+                                });
+                            </code></pre>
+                            <h4 style="margin-top: 30px;">2. Main File</h4>
+                            <pre><code class="language-javascript">
+                                curl([
+                                    "css!bootstrap",
+                                    "css!app",
+                                    "amd/child",    // This will one by one load everything as needed
+                                ]);
+
+                                // load sidebar in parallel
+                                curl(["amd/sidebar/initSidebar"]);
+                            </code></pre>
+                            <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /#page-content-wrapper -->
+
+        </div>
+        <!-- /#wrapper -->
+
+        <!-- Prism -->
+        <!-- These files were added later-->
+        <script src="node_modules/prismjs/prism.js"></script>
+        <script src="node_modules/prismjs/plugins/normalize-whitespace/prism-normalize-whitespace.js"></script>
+        <link href="node_modules/prismjs/themes/prism-coy.css" rel="stylesheet">
+
+    </body>
+
+</html>

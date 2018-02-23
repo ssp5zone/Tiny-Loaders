@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>Tiny Loaders - AlmondJS</title>
+        <!-- Bootstrap Core CSS -->
+        <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Custom CSS -->
+        <link href="public/stylesheets/simple-sidebar.css" rel="stylesheet">
+        <script src="node_modules/almond/almond.js"></script>       
+    </head>
+
+    <body>
+        <div id="wrapper">
+            <!-- Sidebar -->
+            <div id="sidebar-wrapper"></div>
+            <!-- /#sidebar-wrapper -->
+            <!-- Page Content -->
+            <div id="page-content-wrapper">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h1>AlmondJS - Manual Bundle</h1>
+                            <p>AlmondJS is a small part of RequireJS, which has no provision to download dependencies on demand. Hence it only supports bundled modules.</p>
+                            <p>Also no configuration required.</p>
+                            <p>As of now, most amd-module bundlers (Rollup, js-bundler, amd-bundler, Parcel.js) suck. 
+                                <i>(No no. I am not wrong. Hence, there must be some issue with plugin, Node.js, Browser, Computer, Electricity, Gravity, Space or Time) </i>
+                            </p>
+                            <p>Hence manually bundled them in one file.</p>
+                            <p>You can write your own bundler as well. All you have to do for bundling is,</p>
+                            <ol>
+                                <li>Go to said file.</li>
+                                <li>Check if it has a define(). If not shim it (wrap it).</li>
+                                <li>If the define() does not have an <mark>id</mark>, provide one based on the path.
+                                    Otherwise there would be no way to identify a block.</li>
+                                <li>Copy the contents in the final build file. (order in not important)</li> 
+                                <li>Update all reference to this file to the newly given id.</li>
+                                <li>Loop through its dependencies.forEach(Goto 1)</li>
+                            </ol>
+                            <p>There is an added advantage of bundling. Double-click and run the file. No need of server as no lazy loading.</p>
+                            <div class="module-container"></div>
+                            <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /#page-content-wrapper -->
+        </div>
+        <!-- /#wrapper -->
+    </body>
+
+    <script src="dist/manual/bundle.js"></script>
+
+</html>
