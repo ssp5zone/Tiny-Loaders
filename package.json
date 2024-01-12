@@ -7,7 +7,7 @@
   "dependencies": {
     "LABjs": "https://github.com/getify/LABjs.git",
     "almond": "^0.3.3",
-    "bootstrap": "3.3.7",
+    "bootstrap": "3.4.1",
     "curl-amd": "^0.8.12",
     "jquery": "^3.3.1",
     "prismjs": "^1.11.0"
